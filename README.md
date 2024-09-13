@@ -34,7 +34,9 @@ if `"model"` is not set it will be automatically selected based on language
 
 ### **ovos-tts-plugin-coqui-fairseq**
 
-[1127 supported languages](https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html)
+[1127 supported languages](https://dl.fbaipublicfiles.com/mms/tts/all-tts-languages.html) using models from [The Massively Multilingual Speech (MMS) project](https://huggingface.co/docs/transformers/main/en/model_doc/mms)
+
+The equivalent STT models can be used via [ovos-stt-plugin-mms](https://github.com/OpenVoiceOS/ovos-stt-plugin-mms) companion plugin
 
 ```json
   "tts": {
@@ -85,9 +87,7 @@ Use any audio sample as reference, voice conversion will be applied on top of an
 #### Overflow TTS
 
 Neural HMMs are a type of neural transducer recently proposed for sequence-to-sequence modelling in text-to-speech. 
-They combine the best features of classic statistical speech synthesis and modern neural TTS, requiring less data and fewer training updates, and are less prone to gibberish output caused by neural attention failures. 
-
-In Overflow TTS, we combine neural HMM TTS with normalising flows for describing the highly non-Gaussian distribution of speech acoustics. The result is a powerful, fully probabilistic model of durations and acoustics that can be trained using exact maximum likelihood. Compared to dominant flow-based acoustic models, our approach integrates autoregression for improved modelling of long-range dependences such as utterance-level prosody.
+They combine the best features of classic statistical speech synthesis and modern neural TTS
 
 ```python
 # {'model_id': 'tts_models/en/ljspeech/overflow', 'lang': 'en', 'author': 'Eren Gölge @erogol', 'license': 'apache 2.0'}
@@ -96,21 +96,9 @@ In Overflow TTS, we combine neural HMM TTS with normalising flows for describing
 
 #### Forward TTS model(s)
 
-A general feed-forward TTS model implementation that can be configured to different architectures by setting different encoder and decoder networks. 
-
-The following architectures are available:
-
-**FastSpeech:**
-
-It’s a feed-forward model TTS model that uses Feed Forward Transformer (FFT) modules as the encoder and decoder.
-
-**FastPitch:**
-
-It uses the same FastSpeech architecture that is conditioned on fundamental frequency (f0) contours with the promise of more expressive speech.
-
-**SpeedySpeech:**
-
-It uses Residual Convolution layers instead of Transformers that leads to a more compute friendly model.
+- **FastSpeech:** It’s a feed-forward model TTS model that uses Feed Forward Transformer (FFT) modules as the encoder and decoder.
+- **FastPitch:** It uses the same FastSpeech architecture that is conditioned on fundamental frequency (f0) contours with the promise of more expressive speech.
+- **SpeedySpeech:** It uses Residual Convolution layers instead of Transformers that leads to a more compute friendly model.
 
 ```python
 # {'model_id': 'tts_models/en/ljspeech/fast_pitch', 'lang': 'en', 'author': 'Eren Gölge @erogol', 'license': 'apache 2.0'}
@@ -120,26 +108,9 @@ It uses Residual Convolution layers instead of Transformers that leads to a more
 
 #### XTTS
 
-ⓍTTS is a super cool Text-to-Speech model that lets you clone voices in different languages by using just a quick 3-second audio clip. Built on the 🐢Tortoise, ⓍTTS has important model changes that make cross-language voice cloning and multi-lingual speech generation super easy. There is no need for an excessive amount of training data that spans countless hours.
+ⓍTTS lets you clone voices in different languages by using just a quick 3-second audio clip.
 
-XTTS-v2 supports 17 languages:
-- Arabic (ar)
-- Chinese (zh-cn)
-- Czech (cs)
-- Dutch (nl)
-- English (en)
-- French (fr)
-- German (de)
-- Hindi (hi)
-- Hungarian (hu)
-- Italian (it)
-- Japanese (ja)
-- Korean (ko)
-- Polish (pl)
-- Portuguese (pt)
-- Russian (ru)
-- Spanish (es)
-- Turkish (tr)
+XTTS-v2 supports **17 languages**: Arabic (ar) Chinese (zh-cn) Czech (cs) Dutch (nl) English (en) French (fr) German (de) Hindi (hi) Hungarian (hu)  Italian (it) Japanese (ja) Korean (ko)  Polish (pl)  Portuguese (pt)  Russian (ru) Spanish (es)  Turkish (tr)
 
 ```python
 # {'model_id': 'tts_models/multilingual/multi-dataset/xtts_v2', 'lang': 'multilingual', 'author': '?', 'license': 'CPML'}
@@ -148,11 +119,7 @@ XTTS-v2 supports 17 languages:
 
 #### Tacotron
 
-Tacotron is one of the first successful DL-based text-to-mel models and opened up the whole TTS field for more DL research.
-
-Tacotron mainly is an encoder-decoder model with attention.
-
-The encoder takes input tokens (characters or phonemes) and the decoder outputs mel-spectrogram* frames. Attention module in-between learns to align the input tokens with the output mel-spectrgorams.
+Tacotron mainly is an encoder-decoder model with attention. The encoder takes input tokens (characters or phonemes) and the decoder outputs mel-spectrogram* frames. Attention module in-between learns to align the input tokens with the output mel-spectrgorams.
 
 ```python
 # {'model_id': 'tts_models/en/ek1/tacotron2', 'lang': 'en', 'author': '?', 'license': 'apache 2.0'}
@@ -187,9 +154,7 @@ Glow TTS is a normalizing flow model for text-to-speech. It is built on the gene
 
 #### VITS
 
-VITS (Conditional Variational Autoencoder with Adversarial Learning for End-to-End Text-to-Speech ) is an End-to-End (encoder -> vocoder together) TTS model that takes advantage of SOTA DL techniques like GANs, VAE, Normalizing Flows.
-
-It does not require external alignment annotations and learns the text-to-audio alignment using MAS, as explained in the paper. The model architecture is a combination of GlowTTS encoder and HiFiGAN vocoder. It is a feed-forward model with x67.12 real-time factor on a GPU.
+VITS (Conditional Variational Autoencoder with Adversarial Learning for End-to-End Text-to-Speech ) is an End-to-End (encoder -> vocoder together) TTS model that takes advantage of SOTA DL techniques like GANs, VAE, Normalizing Flows. The model architecture is a combination of GlowTTS encoder and HiFiGAN vocoder.
 
 ```python
 # {'model_id': 'tts_models/bg/cv/vits', 'lang': 'bg', 'author': '@NeonGeckoCom', 'license': 'bsd-3-clause'}
@@ -232,6 +197,6 @@ It does not require external alignment annotations and learns the text-to-audio 
 # {'model_id': 'tts_models/bn/custom/vits-female', 'lang': 'bn', 'author': '@mobassir94', 'license': 'Apache 2.0'}
 ```
 
+## Credits
 
-
-
+> This plugin was funded by [TigreGotico](https://github.com/TigreGotico)

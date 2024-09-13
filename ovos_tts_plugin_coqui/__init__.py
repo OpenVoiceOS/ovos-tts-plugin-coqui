@@ -8,6 +8,18 @@ from ovos_plugin_manager.tts import load_tts_plugin
 from ovos_utils.log import LOG
 
 
+def standardize_lang_tag(lang_code, macro=True):
+    """https://langcodes-hickford.readthedocs.io/en/sphinx/index.html"""
+    # TODO - move to ovos-utils
+    try:
+        from langcodes import standardize_tag as std
+        return std(lang_code, macro=macro)
+    except:
+        if macro:
+            return lang_code.split("-")[0].lower()
+        return lang_code.lower()
+
+
 class CoquiTTSPlugin(AbstractTTS):
     """Interface to coqui TTS."""
     _MODELS = {}
@@ -193,7 +205,7 @@ class CoquiTTSPlugin(AbstractTTS):
         Returns:
             set: supported languages
         """
-        return set(self.LANG2MODEL.keys())
+        return set(standardize_lang_tag(t) for t in self.LANG2MODEL.keys())
 
 
 class CoquiXTTSPlugin(AbstractTTS):
@@ -210,7 +222,7 @@ class CoquiXTTSPlugin(AbstractTTS):
     def get_tts(self, sentence: str, wav_file: str,
                 lang: str = None, voice: str = None):
         lang = lang or self.lang
-        if lang.split("-")[0] not in self.available_languages:
+        if standardize_lang_tag(lang) not in self.available_languages:
             raise ValueError(f"{lang} is not supported for selected TTS, valid: {self.available_languages}")
         return self.model.get_tts(sentence, wav_file, lang=lang, voice=voice)
 
@@ -222,7 +234,7 @@ class CoquiXTTSPlugin(AbstractTTS):
         Returns:
             set: supported languages
         """
-        return set(self.SUPPORTED_LANGS)
+        return set(standardize_lang_tag(t) for t in self.SUPPORTED_LANGS)
 
 
 class CoquiFreeVCTTS(AbstractTTS):
@@ -387,7 +399,7 @@ class CoquiFairSeqTTSPlugin(AbstractTTS):
         Returns:
             set: supported languages
         """
-        return set(self.SUPPORTED_LANGS)
+        return set(standardize_lang_tag(t) for t in self.SUPPORTED_LANGS)
 
 
 if __name__ == "__main__":
