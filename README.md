@@ -19,18 +19,41 @@ This repository provides 4 plugins:
 
 ### **ovos-tts-plugin-coqui**
 
+if `"model"` is not set it will be automatically selected based on language
+
+```json
+  "tts": {
+    "module": "ovos-tts-plugin-coqui",
+    "ovos-tts-plugin-coqui": {}
+  }
+ 
+```
+
+you can set a specific model id to use pretrained models (see full list below), some models accept a `"voice"` (often also called a "speaker" in each model)
 ```json
   "tts": {
     "module": "ovos-tts-plugin-coqui",
     "ovos-tts-plugin-coqui": {
-      "model": "tts_models/multilingual/multi-dataset/xtts_v2",
+      "model": "tts_models/en/vctk/XXX",
       "voice": "p232"
     }
   }
  
 ```
-if `"model"` is not set it will be automatically selected based on language
+you can also set a model from a path, optionally with a vocoder if the mode architecture needs it
 
+```json
+  "tts": {
+    "module": "ovos-tts-plugin-coqui",
+    "ovos-tts-plugin-coqui": {
+      "model": "full/path/to/model.ckpt",
+      "model_config": "full/path/to/model_config.json",
+      "vocoder": "full/path/to/vocoder.ckpt",
+      "vocoder_config": "full/path/to/vocoder_config.json"
+    }
+  }
+ 
+```
 
 ### **ovos-tts-plugin-coqui-fairseq**
 

@@ -135,43 +135,51 @@ class CoquiTTSPlugin(AbstractTTS):
         config = config or {}
         config["lang"] = lang
         super().__init__(config=config, audio_ext='wav')
-        self.default_model = (self.config.get("model") or
-                              self.LANG2MODEL.get(self.lang) or
-                              self.LANG2MODEL.get(self.lang.split("-")[0]))
-        if isinstance(self.default_model, list):
-            self.default_model = self.default_model[0]
-        if not self.default_model:
-            raise ValueError(f"{self.lang} is not supported, pass 'model' explicitly in config")
-        if os.path.isfile(self.default_model):
-            raise NotImplementedError("model loading from file not implemented")
-        self.get_model()
+        model_id = self.config.get("model") or self._lang2model()
+        self.get_model(model=model_id,
+                       model_config=self.config.get("model_config"),
+                       vocoder=self.config.get("vocoder"),
+                       vocoder_config=self.config.get("vocoder_config"))
 
-    def get_model(self, model_id: str = None):
-        model_id = model_id or self.default_model
-        if model_id not in self._MODELS:
-            self._MODELS[model_id] = CTTS(model_id)
+    def _lang2model(self, lang: str = None ) -> str:
+        lang = lang or self.lang
+        model_id = self.LANG2MODEL.get(lang) or self.LANG2MODEL.get(lang.split("-")[0])
+        if isinstance(model_id, list):
+            model_id = model_id[0]
+        if not model_id:
+            raise ValueError(f"{lang} is not supported, "
+                             f"pass 'model' explicitly in config")
+        return model_id
+
+    def get_model(self, lang: str = None,
+                  model=None,
+                  model_config=None,
+                  vocoder=None,
+                  vocoder_config=None):
+        lang = lang or self.lang
+        if lang not in self._MODELS:
+            model = model or self._lang2model(lang)
+            if os.path.isfile(model):
+                tts = CTTS(model_path=model,
+                           config_path=model_config or model.replace(".pth", "_config.json"),
+                           vocoder_path=vocoder,
+                           vocoder_config_path=vocoder_config)
+            else:
+                tts = CTTS(model)
             if self.config.get("gpu"):
-                self._MODELS[model_id].to("cuda")
-        return self._MODELS[model_id]
+                tts.to("cuda")
+            self._MODELS[lang] = tts
+        return self._MODELS[lang]
 
     def get_tts(self, sentence: str, wav_file: str,
                 lang: str = None, voice: str = None,
                 reference_speaker: str = None,
                 model_id: str = None):
+        lang = lang or self.lang
         if model_id:
-            tts = self.get_model(model_id)
-            lang = lang or self.lang
-        elif lang is None:
-            tts = self.get_model(self.default_model)
-            lang = self.lang
+            tts = self.get_model(model=model_id)
         else:
-            model = (self.LANG2MODEL.get(lang) or
-                     self.LANG2MODEL.get(lang.split("-")[0]))
-            if not model:
-                raise ValueError(f"{lang} is not supported")
-            if isinstance(model, list):
-                model = model[0]
-            tts = self.get_model(model)
+            tts = self.get_model(lang=lang)
 
         if tts.is_multi_speaker:
             voice = voice or tts.speakers[0]
@@ -403,6 +411,14 @@ class CoquiFairSeqTTSPlugin(AbstractTTS):
 
 
 if __name__ == "__main__":
+    tts = CoquiTTSPlugin(lang="es-es",   config={"gpu": False})
+
+    tts.get_tts("It took me a long time to have a voice, now that i have I'm not going to be silent",
+                "output.wav", lang="en")
+    tts.get_tts("A chipureira gosta de chipurar, o jurébeiro gosta de jurébar",
+                "output_pt.wav", lang="pt-pt")
+
+    exit()
     print(len(CoquiFairSeqTTSPlugin.SUPPORTED_LANGS))
 
     rvc = CoquiFreeVCTTS(config={
