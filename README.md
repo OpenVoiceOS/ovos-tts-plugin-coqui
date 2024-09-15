@@ -199,4 +199,6 @@ VITS (Conditional Variational Autoencoder with Adversarial Learning for End-to-E
 
 ## Credits
 
-> This plugin was funded by [TigreGotico](https://github.com/TigreGotico)
+<img src="img.png" width="128"/>
+
+> This plugin was funded by the Ministerio para la Transformación Digital y de la Función Pública and Plan de Recuperación, Transformación y Resiliencia - Funded by EU – NextGenerationEU within the framework of the project ILENIA with reference 2022/TL22/00215337
