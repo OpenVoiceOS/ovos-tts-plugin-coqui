@@ -1,16 +1,12 @@
 # Changelog
 
-## [0.2.0a1](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.0a1) (2024-09-15)
+## [0.2.1a1](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.1a1) (2025-06-08)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.1.1...0.2.0a1)
-
-**Implemented enhancements:**
-
-- feat - support specifying models from file path [\#1](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/issues/1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.0...0.2.1a1)
 
 **Merged pull requests:**
 
-- feat:models\_from\_file [\#4](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/4) ([JarbasAl](https://github.com/JarbasAl))
+- fix: compatibility with ovos-plugin-manager 1.X.X [\#7](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/7) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
