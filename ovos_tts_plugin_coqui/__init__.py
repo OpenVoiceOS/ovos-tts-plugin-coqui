@@ -5,6 +5,7 @@ from langcodes import Language
 from ovos_config import Configuration
 from ovos_plugin_manager.templates.tts import TTS as AbstractTTS
 from ovos_plugin_manager.tts import load_tts_plugin
+from ovos_utils import classproperty
 from ovos_utils.log import LOG
 
 
@@ -131,9 +132,8 @@ class CoquiTTSPlugin(AbstractTTS):
                'tts_models/multilingual/multi-dataset/xtts_v1.1']
     }
 
-    def __init__(self, lang="en-us", config=None):
+    def __init__(self, config=None):
         config = config or {}
-        config["lang"] = lang
         super().__init__(config=config, audio_ext='wav')
         model_id = self.config.get("model") or self._lang2model()
         self.get_model(model=model_id,
@@ -141,7 +141,7 @@ class CoquiTTSPlugin(AbstractTTS):
                        vocoder=self.config.get("vocoder"),
                        vocoder_config=self.config.get("vocoder_config"))
 
-    def _lang2model(self, lang: str = None ) -> str:
+    def _lang2model(self, lang: str = None) -> str:
         lang = lang or self.lang
         model_id = self.LANG2MODEL.get(lang) or self.LANG2MODEL.get(lang.split("-")[0])
         if isinstance(model_id, list):
@@ -205,15 +205,15 @@ class CoquiTTSPlugin(AbstractTTS):
                             speaker=voice if tts.is_multi_speaker else None)
         return (wav_file, None)  # No phonemes
 
-    @property
-    def available_languages(self) -> set:
+    @classproperty
+    def available_languages(cls) -> set:
         """Return languages supported by this TTS implementation in this state
         This property should be overridden by the derived class to advertise
         what languages that engine supports.
         Returns:
             set: supported languages
         """
-        return set(standardize_lang_tag(t) for t in self.LANG2MODEL.keys())
+        return set(standardize_lang_tag(t) for t in cls.LANG2MODEL.keys())
 
 
 class CoquiXTTSPlugin(AbstractTTS):
@@ -221,11 +221,11 @@ class CoquiXTTSPlugin(AbstractTTS):
     SUPPORTED_LANGS = ["ar", "zh", "cs", "nl", "en", "fr", "de", "hi",
                        "hu", "it", "ja", "ko", "pl", "pt", "ru", "es", "tr"]
 
-    def __init__(self, lang="en-us", config=None):
+    def __init__(self, config=None):
         config = config or {}
         super().__init__(config=config, audio_ext='wav')
         self.default_model = self.config.get("model", "tts_models/multilingual/multi-dataset/xtts_v2")
-        self.model = CoquiTTSPlugin(config={"model": self.default_model, "lang": lang})
+        self.model = CoquiTTSPlugin(config={"model": self.default_model, "lang": self.lang})
 
     def get_tts(self, sentence: str, wav_file: str,
                 lang: str = None, voice: str = None):
@@ -234,21 +234,21 @@ class CoquiXTTSPlugin(AbstractTTS):
             raise ValueError(f"{lang} is not supported for selected TTS, valid: {self.available_languages}")
         return self.model.get_tts(sentence, wav_file, lang=lang, voice=voice)
 
-    @property
-    def available_languages(self) -> set:
+    @classproperty
+    def available_languages(cls) -> set:
         """Return languages supported by this TTS implementation in this state
         This property should be overridden by the derived class to advertise
         what languages that engine supports.
         Returns:
             set: supported languages
         """
-        return set(standardize_lang_tag(t) for t in self.SUPPORTED_LANGS)
+        return set(standardize_lang_tag(t) for t in cls.SUPPORTED_LANGS)
 
 
 class CoquiFreeVCTTS(AbstractTTS):
     """Interface to https://github.com/OlaWod/FreeVC via Coqui TTS"""
 
-    def __init__(self, lang="en-us", config=None):
+    def __init__(self, config=None):
         config = config or {}
         super().__init__(config=config, audio_ext='wav')
         tts_module = self.config.get("tts_module", "ovos-tts-plugin-coqui")
@@ -263,7 +263,7 @@ class CoquiFreeVCTTS(AbstractTTS):
             raise ValueError(f"{tts_module} failed to load, is it installed?")
         tts_config = Configuration().get("tts", {}).get(tts_module) or {}
         tts_config.update(self.config)
-        self.model: AbstractTTS = clazz(lang=lang, config=tts_config)
+        self.model: AbstractTTS = clazz(config=tts_config)
         LOG.info(f"FreeVC base TTS: {tts_module} - {clazz} - {tts_config}")
         self.vc = CTTS(model_name="voice_conversion_models/multilingual/vctk/freevc24")
         if self.config.get("gpu"):
@@ -279,7 +279,7 @@ class CoquiFreeVCTTS(AbstractTTS):
                                          file_path=wav_file)
         return wav_file, phonemes
 
-    @property
+    @classproperty
     def available_languages(self) -> set:
         """Return languages supported by this TTS implementation in this state
         This property should be overridden by the derived class to advertise
@@ -287,7 +287,10 @@ class CoquiFreeVCTTS(AbstractTTS):
         Returns:
             set: supported languages
         """
-        return self.model.available_languages
+        try:
+            return self.model.available_languages
+        except:  # if called as classproperty we dont have self.model
+            return set()
 
 
 class CoquiFairSeqTTSPlugin(AbstractTTS):
@@ -378,7 +381,7 @@ class CoquiFairSeqTTSPlugin(AbstractTTS):
         'zae', 'zty', 'zav', 'zza', 'zyb', 'ziw', 'zos', 'gnd', 'ewe']
     _MODELS = {}
 
-    def __init__(self, lang="en-us", config=None):
+    def __init__(self, config=None):
         super().__init__(config=config, audio_ext='wav')
 
     def get_model(self, lang: str = None) -> CoquiTTSPlugin:
@@ -399,19 +402,19 @@ class CoquiFairSeqTTSPlugin(AbstractTTS):
         return model.get_tts(sentence, wav_file, lang=lang,
                              model_id=f"tts_models/{norm_l}/fairseq/vits")
 
-    @property
-    def available_languages(self) -> set:
+    @classproperty
+    def available_languages(cls) -> set:
         """Return languages supported by this TTS implementation in this state
         This property should be overridden by the derived class to advertise
         what languages that engine supports.
         Returns:
             set: supported languages
         """
-        return set(standardize_lang_tag(t) for t in self.SUPPORTED_LANGS)
+        return set(standardize_lang_tag(t) for t in cls.SUPPORTED_LANGS)
 
 
 if __name__ == "__main__":
-    tts = CoquiTTSPlugin(lang="es-es",   config={"gpu": False})
+    tts = CoquiTTSPlugin(lang="es-es", config={"gpu": False})
 
     tts.get_tts("It took me a long time to have a voice, now that i have I'm not going to be silent",
                 "output.wav", lang="en")
@@ -430,7 +433,8 @@ if __name__ == "__main__":
 
     exit()
     tts = CoquiTTSPlugin(lang="en",
-                         config={"gpu": True, "reference_speaker": "/home/miro/PycharmProjects/ovos-tts-plugin-coqui/wjune.mp3"})
+                         config={"gpu": True,
+                                 "reference_speaker": "/home/miro/PycharmProjects/ovos-tts-plugin-coqui/wjune.mp3"})
     print(tts.available_languages)
     # {'tr', 'lin', 'ja', 'fa', 'ko', 'ewe', 'yor', 'da', 'bg', 'mt', 'pl', 'et', 'hau',
     # 'ro', 'sl', 'hu', 'hr', 'zh', 'lt', 'cs', 'tw_asante', 'ar', 'es', 'ru',
@@ -447,5 +451,5 @@ if __name__ == "__main__":
     tts.get_tts(pt, "output.wav", lang="pt-pt")
 
     rvc = CoquiFreeVCTTS(config={"tts_module": "ovos-tts-plugin-nos",
-                            "reference_speaker": "/home/miro/PycharmProjects/ovos-tts-plugin-nos/test.wav"})
+                                 "reference_speaker": "/home/miro/PycharmProjects/ovos-tts-plugin-nos/test.wav"})
     rvc.get_tts(pt, "output.wav")
