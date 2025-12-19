@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2a4](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a4) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a3...0.2.2a4)
+
+**Merged pull requests:**
+
+- Update dependency ovos-plugin-manager to v2 [\#15](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/15) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.2.2a3](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a3) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a2...0.2.2a3)
