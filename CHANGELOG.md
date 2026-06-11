@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2a5](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a5) (2026-06-11)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a4...0.2.2a5)
+
+**Merged pull requests:**
+
+- docs: add TigreGotico attribution, link ILENIA [\#19](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/19) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.2a4](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a4) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a3...0.2.2a4)
