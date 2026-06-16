@@ -5,6 +5,7 @@ rendered audio back with a reference STT and scores the round-trip with
 WER/CER via ovoscope. Report-only by default (TTS_MAX_WER=1.0).
 """
 import os
+import json
 
 from ovoscope.tts_intelligibility import score_tts_intelligibility
 
@@ -23,5 +24,5 @@ PHRASES = [
 def test_tts_intelligibility():
     tts = CoquiTTSPlugin({"lang": LANG})
     report = score_tts_intelligibility(tts, PHRASES, lang=LANG, mode="playback")
-    print(f"::TTS-INTELLIGIBILITY:: {report.to_dict()}")
+    print("::TTS-INTELLIGIBILITY:: " + json.dumps(report.to_dict()))
     assert report.mean_wer <= float(os.environ.get("TTS_MAX_WER", "1.0"))

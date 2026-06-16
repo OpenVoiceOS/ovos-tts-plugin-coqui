@@ -14,6 +14,6 @@ jobs:
     with:
       install_extras: 'test'
       test_path: 'test/end2end/test_tts_intelligibility.py'
-      max_wer: '1.0'
+      max_wer: '0.5'
       pre_release: true
       system_deps: ''
