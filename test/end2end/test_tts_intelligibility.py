@@ -23,6 +23,6 @@ PHRASES = [
 
 def test_tts_intelligibility():
     tts = CoquiTTSPlugin({"lang": LANG})
-    report = score_tts_intelligibility(tts, PHRASES, lang=LANG, mode="playback")
+    report = score_tts_intelligibility(tts, PHRASES, lang=LANG, mode="direct")
     print("::TTS-INTELLIGIBILITY:: " + json.dumps(report.to_dict()))
     assert report.mean_wer <= float(os.environ.get("TTS_MAX_WER", "1.0"))
