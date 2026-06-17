@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2a6](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a6) (2026-06-17)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a5...0.2.2a6)
+
+**Merged pull requests:**
+
+- chore: add missing shared CI workflows [\#20](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/20) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.2a5](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a5) (2026-06-11)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a4...0.2.2a5)
