@@ -36,10 +36,11 @@ jobs:
           python-version: '3.11'
 
       - name: Install System Dependencies
-        # torchcodec (required by coqui-tts for audio IO on torch >= 2.9) needs FFmpeg.
+        # torchcodec (required by coqui-tts for audio IO on torch >= 2.9) needs
+        # FFmpeg; coqui-tts's phonemizer needs an espeak/espeak-ng backend.
         run: |
           sudo apt-get update -q
-          sudo apt-get install -yq ffmpeg
+          sudo apt-get install -yq ffmpeg espeak-ng
 
       - name: Cache models (huggingface + plugin data)
         uses: actions/cache@v4
