@@ -64,6 +64,7 @@ jobs:
         env:
           TTS_MAX_WER: ${{ env.MAX_WER }}
         run: |
+          set -o pipefail
           python -m pytest \
             ${{ env.TEST_PATH }} \
             --json-report \
