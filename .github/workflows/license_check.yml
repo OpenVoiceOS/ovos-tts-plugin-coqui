@@ -10,9 +10,11 @@ jobs:
     uses: OpenVoiceOS/gh-automations/.github/workflows/license-check.yml@dev
     secrets: inherit
     with:
-      # num2words (LGPL) and soxr (LGPL-2.1) are WeakCopyleft. Both are imported
+      # num2words (LGPL) and soxr (LGPL-2.1) are WeakCopyleft; the nvidia-*/cuda-*
+      # wheels are NVIDIA's proprietary-but-redistributable CUDA runtime (pulled by
+      # torch), flagged Other/Error but safe to ship. Both are imported
       # and used unmodified as libraries — LGPL imposes no copyleft on the
       # importing application — and are required runtime dependencies of the coqui
       # TTS stack. Safe to use as libraries.
       exclude_packages: >-
-        (?i:^num2words([=<>!~ @;].*)?$)|(?i:^soxr([=<>!~ @;].*)?$)
+        (?i:^num2words([=<>!~ @;].*)?$)|(?i:^soxr([=<>!~ @;].*)?$)|(?i:^nvidia[-_].*)|(?i:^cuda[-_].*)|(?i:^triton([=<>!~ @;].*)?$)
