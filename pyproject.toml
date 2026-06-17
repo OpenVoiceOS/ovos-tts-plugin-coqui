@@ -29,8 +29,17 @@ classifiers = [
 ]
 dependencies = [
     "coqui-tts",
+    "torch",
+    "torchaudio",
+    "transformers>=4.57,<5",
     "langcodes",
     "ovos-plugin-manager>=2.1.0,<3.0.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "ovoscope[tts]",
 ]
 
 [project.urls]
