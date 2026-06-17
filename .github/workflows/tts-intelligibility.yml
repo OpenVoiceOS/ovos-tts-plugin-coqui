@@ -35,6 +35,12 @@ jobs:
         with:
           python-version: '3.11'
 
+      - name: Install System Dependencies
+        # torchcodec (required by coqui-tts for audio IO on torch >= 2.9) needs FFmpeg.
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq ffmpeg
+
       - name: Cache models (huggingface + plugin data)
         uses: actions/cache@v4
         with:
@@ -52,8 +58,9 @@ jobs:
           echo "Installing ovoscope[tts] from GitHub dev (pre_release)..."
           pip install --force-reinstall \
             "ovoscope[tts] @ git+https://github.com/TigreGotico/ovoscope@dev"
-          # Install CPU-only torch/torchaudio first to avoid multi-GB CUDA wheels.
-          pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+          # Install CPU-only torch/torchaudio/torchcodec first to avoid multi-GB
+          # CUDA wheels. torchcodec is required by coqui-tts for audio IO on torch>=2.9.
+          pip install torch torchaudio torchcodec --index-url https://download.pytorch.org/whl/cpu
           pip install ".[$INSTALL_EXTRAS]"
           # coqui-tts 0.27.x uses transformers.pytorch_utils.isin_mps_friendly,
           # which was removed in transformers 5.x — pin to the 4.57+ < 5 line.
