@@ -55,6 +55,9 @@ jobs:
           # Install CPU-only torch/torchaudio first to avoid multi-GB CUDA wheels.
           pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
           pip install ".[$INSTALL_EXTRAS]"
+          # coqui-tts 0.27.x uses transformers.pytorch_utils.isin_mps_friendly,
+          # which was removed in transformers 5.x — pin to the 4.57+ < 5 line.
+          pip install "transformers>=4.57,<5"
           python -c "import ovoscope; print('ovoscope path:', ovoscope.__file__)"
           python -c "from TTS.api import TTS; print('coqui-tts + torch import OK')"
 

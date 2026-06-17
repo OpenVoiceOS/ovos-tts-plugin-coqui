@@ -1,5 +1,6 @@
 coqui-tts
 torch
 torchaudio
+transformers>=4.57,<5
 langcodes
 ovos-plugin-manager>=2.1.0,<3.0.0
