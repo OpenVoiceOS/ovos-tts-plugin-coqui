@@ -1,19 +1,112 @@
 name: TTS Intelligibility
-
+# Inline variant of OpenVoiceOS/gh-automations/.github/workflows/tts-intelligibility.yml@dev.
+#
+# Triggers on `push` (not just pull_request) and resolves the PR number via the
+# API, so the WER score is posted even when GitHub does not emit a
+# pull_request:synchronize event (it does not, while this workflow is absent from
+# the base branch). coqui-tts + torch are heavy; the install can take a while.
 on:
   push:
-    branches: [dev]
   pull_request:
-    branches: [dev]
   workflow_dispatch:
 
 jobs:
   tts-intelligibility:
-    uses: OpenVoiceOS/gh-automations/.github/workflows/tts-intelligibility.yml@dev
-    secrets: inherit
-    with:
-      install_extras: 'test'
-      test_path: 'test/end2end/test_tts_intelligibility.py'
-      max_wer: '0.5'
-      pre_release: true
-      system_deps: ''
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    env:
+      MAX_WER: '0.5'
+      TEST_PATH: 'test/end2end/test_tts_intelligibility.py'
+      INSTALL_EXTRAS: 'test'
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Checkout gh-automations scripts
+        uses: actions/checkout@v6
+        with:
+          repository: OpenVoiceOS/gh-automations
+          ref: dev
+          path: _gh_automations/
+
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+
+      - name: Cache models (huggingface + plugin data)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/huggingface
+            ~/.local/share
+          key: tts-intel-models-${{ runner.os }}-3.11-v1
+          restore-keys: |
+            tts-intel-models-${{ runner.os }}-3.11-
+
+      - name: Install Package with Test Extras
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pytest pytest-json-report
+          echo "Installing ovoscope[tts] from GitHub dev (pre_release)..."
+          pip install --force-reinstall \
+            "ovoscope[tts] @ git+https://github.com/TigreGotico/ovoscope@dev"
+          # Install CPU-only torch first to avoid pulling multi-GB CUDA wheels.
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install ".[$INSTALL_EXTRAS]"
+          python -c "import ovoscope; print('ovoscope path:', ovoscope.__file__)"
+          python -c "from TTS.api import TTS; print('coqui-tts + torch import OK')"
+
+      - name: Run TTS intelligibility tests
+        id: run_tests
+        continue-on-error: true
+        env:
+          TTS_MAX_WER: ${{ env.MAX_WER }}
+        run: |
+          python -m pytest \
+            ${{ env.TEST_PATH }} \
+            --json-report \
+            --json-report-file=/tmp/tts-intel-results.json \
+            -v -s 2>&1 | tee /tmp/tts-intel-stdout.txt
+
+      - name: Resolve open PR number
+        id: pr
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -n "${{ github.event.pull_request.number }}" ]; then
+            echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          else
+            num=$(gh pr list --repo "${{ github.repository }}" \
+              --head "${{ github.ref_name }}" --state open \
+              --json number -q '.[0].number' 2>/dev/null || true)
+            echo "number=${num}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Format TTS intelligibility section for PR comment
+        if: ${{ steps.pr.outputs.number != '' }}
+        run: |
+          python3 _gh_automations/scripts/format_tts_intel.py \
+            --json /tmp/tts-intel-results.json \
+            --log /tmp/tts-intel-stdout.txt \
+            --max-wer "${{ env.MAX_WER }}" \
+            --out /tmp/tts-intel-section.md
+
+      - name: Post TTS intelligibility section to PR comment
+        if: ${{ steps.pr.outputs.number != '' }}
+        run: |
+          python3 _gh_automations/scripts/update_pr_comment.py \
+            --repo "${{ github.repository }}" \
+            --pr "${{ steps.pr.outputs.number }}" \
+            --section-id "tts-intelligibility" \
+            --title "🗣️ TTS Intelligibility" \
+            --content-file /tmp/tts-intel-section.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail job if tests failed
+        if: ${{ steps.run_tests.outcome == 'failure' }}
+        run: |
+          echo "TTS intelligibility check failed — round-trip unintelligible (mean WER > ${{ env.MAX_WER }}) or the test process errored. See report above."
+          exit 1
