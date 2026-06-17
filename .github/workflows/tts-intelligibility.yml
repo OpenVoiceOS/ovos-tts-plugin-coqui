@@ -52,8 +52,8 @@ jobs:
           echo "Installing ovoscope[tts] from GitHub dev (pre_release)..."
           pip install --force-reinstall \
             "ovoscope[tts] @ git+https://github.com/TigreGotico/ovoscope@dev"
-          # Install CPU-only torch first to avoid pulling multi-GB CUDA wheels.
-          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          # Install CPU-only torch/torchaudio first to avoid multi-GB CUDA wheels.
+          pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
           pip install ".[$INSTALL_EXTRAS]"
           python -c "import ovoscope; print('ovoscope path:', ovoscope.__file__)"
           python -c "from TTS.api import TTS; print('coqui-tts + torch import OK')"
