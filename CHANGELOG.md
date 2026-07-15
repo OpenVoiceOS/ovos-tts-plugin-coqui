@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2a8](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a8) (2026-07-15)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a7...0.2.2a8)
+
+**Merged pull requests:**
+
+- Serve plugin via ovos-tts-server docker image [\#30](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/30) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.2a7](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a7) (2026-06-17)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a6...0.2.2a7)
