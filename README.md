@@ -15,6 +15,31 @@ This repository provides 4 plugins:
 
 `pip install ovos-tts-plugin-coqui`
 
+## Docker (ovos-tts-server)
+
+A container image runs the plugin as an
+[`ovos-tts-server`](https://github.com/OpenVoiceOS/ovos-tts-server) (ElevenLabs-compatible
+API), built and pushed to GHCR by CI on every push to `dev`/`master`:
+
+```bash
+docker run -p 9666:9666 -v coqui-cache:/home/ovos/.cache ghcr.io/openvoiceos/ovos-tts-plugin-coqui:latest
+curl "http://localhost:9666/synthesize/hello%20world?lang=en" --output hello.wav
+```
+
+The container serves the base `ovos-tts-plugin-coqui` engine (arbitrary Coqui models,
+auto-selected by language). The other packaged engines — `-xtts`, `-freevc`,
+`-fairseq` — are available in the same install but are not the default served engine;
+change `--engine` (or build your own image) to serve one of those instead.
+
+This is a heavy, CPU-only image (torch is installed from the CPU wheel index, so no
+multi-GB CUDA wheels land). Coqui models are multi-GB and are **not** baked in — on the
+first request the selected model downloads into the mounted cache volume (`TTS_HOME`),
+so expect a slow first synthesis while it fetches; later requests are fast.
+
+The default language is baked in via the `COQUI_LANG` build arg (default `en`); rebuild
+to change it, e.g. `docker build --build-arg COQUI_LANG=pt -t coqui-tts .`, or mount a
+`mycroft.conf` to pick the language/model/voice. See the bundled `docker-compose.yml`.
+
 ## Configuration
 
 ### **ovos-tts-plugin-coqui**
