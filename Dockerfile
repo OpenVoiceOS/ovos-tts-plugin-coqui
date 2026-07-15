@@ -17,10 +17,13 @@ COPY . /app
 
 # the plugin + Coqui runtime + the OVOS TTS server.
 # - CPU-only torch first so the multi-GB CUDA wheels never land in this CPU image.
+# - torch<2.9 avoids coqui-tts's torchcodec audio-IO requirement (PyTorch 2.9 drops
+#   the torchaudio codepath coqui relies on; without torchcodec every coqui entry
+#   point fails to load and the server reports "unknown plugin").
 # - setuptools<81 keeps ovos-plugin-manager's pkg_resources usage working.
 # - ovos-tts-server>=1.13.5a1 alpha floor lets pip resolve the prerelease without --pre.
 RUN pip install --no-cache-dir --upgrade pip \
-    && pip install --no-cache-dir torch torchaudio --index-url https://download.pytorch.org/whl/cpu \
+    && pip install --no-cache-dir "torch<2.9" "torchaudio<2.9" --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir "setuptools<81" "." "ovos-tts-server>=1.13.5a1"
 
 # Default synthesis language, overridable with the COQUI_LANG build arg. The plugin
