@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2a9](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a9) (2026-08-01)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a8...0.2.2a9)
+
+**Merged pull requests:**
+
+- docs: rewrite README in Simplified Technical English [\#38](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/38) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.2.2a8](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a8) (2026-07-15)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a7...0.2.2a8)
