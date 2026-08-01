@@ -1,3 +1,0 @@
-coqui-tts
-langcodes
-ovos-plugin-manager>=1.0.0,<2.0.0

@@ -1,12 +1,76 @@
 # Changelog
 
-## [0.2.1a1](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.1a1) (2025-06-08)
+## [0.2.2a9](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a9) (2026-08-01)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.0...0.2.1a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a8...0.2.2a9)
 
 **Merged pull requests:**
 
-- fix: compatibility with ovos-plugin-manager 1.X.X [\#7](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/7) ([JarbasAl](https://github.com/JarbasAl))
+- docs: rewrite README in Simplified Technical English [\#38](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/38) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.2a8](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a8) (2026-07-15)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a7...0.2.2a8)
+
+**Merged pull requests:**
+
+- Serve plugin via ovos-tts-server docker image [\#30](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/30) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.2a7](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a7) (2026-06-17)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a6...0.2.2a7)
+
+**Merged pull requests:**
+
+- test: add TTS intelligibility e2e \(ovoscope\) [\#21](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/21) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.2a6](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a6) (2026-06-17)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a5...0.2.2a6)
+
+**Merged pull requests:**
+
+- chore: add missing shared CI workflows [\#20](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/20) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.2a5](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a5) (2026-06-11)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a4...0.2.2a5)
+
+**Merged pull requests:**
+
+- docs: add TigreGotico attribution, link ILENIA [\#19](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/19) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.2.2a4](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a4) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a3...0.2.2a4)
+
+**Merged pull requests:**
+
+- Update dependency ovos-plugin-manager to v2 [\#15](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/15) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.2.2a3](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a3) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a2...0.2.2a3)
+
+**Merged pull requests:**
+
+- Update dependency python to 3.14 [\#10](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/10) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.2.2a2](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a2) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a1...0.2.2a2)
+
+**Merged pull requests:**
+
+- Update actions/setup-python action to v6 [\#14](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/14) ([renovate[bot]](https://github.com/apps/renovate))
+
+## [0.2.2a1](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a1) (2025-12-18)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.1...0.2.2a1)
+
+**Merged pull requests:**
+
+- Configure Renovate [\#9](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/9) ([renovate[bot]](https://github.com/apps/renovate))
 
 
 
