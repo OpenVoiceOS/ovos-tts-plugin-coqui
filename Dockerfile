@@ -3,7 +3,7 @@
 # Runs the plugin behind ovos-tts-server on a CPU-only base. The Coqui models are
 # multi-GB and download on first use into the mounted cache volume (TTS_HOME), so
 # they are not baked into the image.
-FROM python:3.11-slim
+FROM python:3.14-slim
 
 # System deps: libsndfile1 (soundfile), git/build tooling for any source wheels.
 RUN apt-get update && apt-get install -y --no-install-recommends \
