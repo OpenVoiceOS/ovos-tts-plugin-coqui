@@ -2,5 +2,13 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "description": "The Dockerfile pins torch<2.9, because PyTorch 2.9 drops the torchaudio codepath coqui-tts needs. The PyTorch CPU index has no torch<2.9 wheel for Python 3.14: the newest is 2.8.0, which stops at cp313. A python:3.14 base image therefore cannot build. Hold the base image below 3.14 until somebody validates coqui on torch 2.9 or later with torchcodec at run time. Raise this cap in the same change that drops the pin.",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["python"],
+      "allowedVersions": "<3.14"
+    }
   ]
 }
