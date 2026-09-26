@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.2a10](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a10) (2026-09-26)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a9...0.2.2a10)
+
+**Merged pull requests:**
+
+- ci\(renovate\): hold the Docker base image below Python 3.14 [\#42](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/pull/42) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+
 ## [0.2.2a9](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/tree/0.2.2a9) (2026-08-01)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-tts-plugin-coqui/compare/0.2.2a8...0.2.2a9)
