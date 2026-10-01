@@ -21,10 +21,10 @@ jobs:
       TEST_PATH: 'test/end2end/test_tts_intelligibility.py'
       INSTALL_EXTRAS: 'test'
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Checkout gh-automations scripts
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: OpenVoiceOS/gh-automations
           ref: dev
